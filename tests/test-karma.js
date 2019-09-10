@@ -48,6 +48,13 @@ const server = require('karma-server-side');
 const webidl = require('./test-webidl');
 const join = require('join-path-js');
 
+// special benchmark setup
+const _ = require('lodash');
+const _process = require('process');
+const benchmark = require('benchmark');
+const Benchmark = benchmark.runInContext({_, _process});
+window.Benchmark = Benchmark;
+
 const entries = [];
 
 if(process.env.JSONLD_TESTS) {
@@ -88,13 +95,13 @@ if(process.env.JSONLD_TESTS) {
   entries.push(webidl);
 }
 
-let benchmark = null;
+let benchmarkOptions = null;
 if(process.env.JSONLD_BENCHMARK) {
-  benchmark = {};
+  benchmarkOptions = {};
   if(!(['1', 'true'].includes(process.env.JSONLD_BENCHMARK))) {
     process.env.JSONLD_BENCHMARK.split(',').forEach(pair => {
       const kv = pair.split('=');
-      benchmark[kv[0]] = kv[1];
+      benchmarkOptions[kv[0]] = kv[1];
     });
   }
 }
@@ -102,6 +109,7 @@ if(process.env.JSONLD_BENCHMARK) {
 const options = {
   nodejs: false,
   assert,
+  benchmark,
   jsonld,
   /* eslint-disable-next-line no-unused-vars */
   exit: code => {
@@ -116,7 +124,7 @@ const options = {
   verboseSkip: process.env.VERBOSE_SKIP === 'true',
   bailOnError: process.env.BAIL === 'true',
   entries,
-  benchmark,
+  benchmarkOptions,
   readFile: filename => {
     return server.run(filename, function(filename) {
       const fs = serverRequire('fs-extra');

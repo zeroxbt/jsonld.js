@@ -39,6 +39,7 @@ if(!require('semver').gte(process.version, '8.6.0')) {
 }
 
 const assert = require('chai').assert;
+const benchmark = require('benchmark');
 const common = require('./test-common');
 const fs = require('fs-extra');
 const jsonld = require('..');
@@ -101,13 +102,13 @@ if(process.env.JSONLD_TESTS) {
   //entries.push(path.resolve(_top, 'tests/node-document-loader-tests.js'));
 }
 
-let benchmark = null;
+let benchmarkOptions = null;
 if(process.env.JSONLD_BENCHMARK) {
-  benchmark = {};
+  benchmarkOptions = {};
   if(!(['1', 'true'].includes(process.env.JSONLD_BENCHMARK))) {
     process.env.JSONLD_BENCHMARK.split(',').forEach(pair => {
       const kv = pair.split('=');
-      benchmark[kv[0]] = kv[1];
+      benchmarkOptions[kv[0]] = kv[1];
     });
   }
 }
@@ -117,6 +118,7 @@ const options = {
     path
   },
   assert,
+  benchmark,
   jsonld,
   exit: code => process.exit(code),
   earl: {
@@ -127,7 +129,7 @@ const options = {
   verboseSkip: process.env.VERBOSE_SKIP === 'true',
   bailOnError: process.env.BAIL === 'true',
   entries,
-  benchmark,
+  benchmarkOptions,
   readFile: filename => {
     return fs.readFile(filename, 'utf8');
   },

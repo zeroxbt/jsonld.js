@@ -8,7 +8,6 @@
  */
 /* eslint-disable indent */
 const EarlReport = require('./earl-report');
-const benchmark = require('benchmark');
 const join = require('join-path-js');
 const rdfCanonize = require('rdf-canonize');
 
@@ -17,6 +16,7 @@ module.exports = function(options) {
 'use strict';
 
 const assert = options.assert;
+const benchmark = options.benchmark;
 const jsonld = options.jsonld;
 
 const manifest = options.manifest || {
@@ -818,8 +818,8 @@ function addTest(manifest, test, tests) {
           throw Error('Unknown test type: ' + test.type);
         }
 
-        let benchResult = null
-        if(options.benchmark) {
+        let benchResult = null;
+        if(options.benchmarkOptions) {
           const result = await runBenchmark({
             test,
             fn,

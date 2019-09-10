@@ -102,6 +102,10 @@ module.exports = function(config) {
               }
             }
           }
+        ],
+        noParse: [
+          // avoid munging internal benchmark script magic
+          /benchmark/
         ]
       },
       node: {
