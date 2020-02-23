@@ -28,6 +28,9 @@
 - Support for expansion and compaction of values container `"@direction"`.
 - Support for RDF transformation of `@direction` when `rdfDirection` is
   'i18n-datatype'.
+- Event handler option "`handleEvent`" to allow custom handling of warnings and
+  potentially other events in the future. Handles event replay for cached
+  contexts.
 
 ### Removed
 - Experimental non-standard `protectedMode` option.
