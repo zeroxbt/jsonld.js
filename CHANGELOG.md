@@ -29,6 +29,9 @@
 - Support for RDF transformation of `@direction` when `rdfDirection` is
   'i18n-datatype'.
 
+### Removed
+- Experimental non-standard `protectedMode` option.
+
 ## 2.0.2 - 2020-01-17
 
 ### Fixed
